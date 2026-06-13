@@ -9,6 +9,7 @@
     <RootNamespace>DHInfoDesk</RootNamespace>
     <AssemblyName>DHInfoDesk</AssemblyName>
     <ApplicationIcon>resources\DHInfoDesk.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -51,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.manifest" />
     <Compile Include="DHInfoDeskAppContext.cs" />
     <Compile Include="DHInfoDeskSettings.cs" />
     <Compile Include="FrmInfoDesk.cs">
