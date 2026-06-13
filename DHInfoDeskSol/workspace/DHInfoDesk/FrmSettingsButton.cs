@@ -82,6 +82,8 @@ namespace DHInfoDesk {
 		private IntPtr m_hMouseHook = IntPtr.Zero;
 		private User32.LowLevelMouseProc m_mouseHookProc = null;
 
+		// Initializes the monitor-specific settings button and popup menu.
+		// 모니터별 설정 버튼과 팝업 메뉴를 초기화한다.
 		public FrmSettingsButton(Screen screen) {
 			m_screen = screen;
 			AutoScaleMode = AutoScaleMode.Dpi;
@@ -235,6 +237,8 @@ namespace DHInfoDesk {
 			}
 		}
 
+		// Opens or closes the settings popup menu.
+		// 설정 팝업 메뉴를 열거나 닫는다.
 		private void m_btnSettings_Click(object sender, EventArgs e) {
 			if (m_menuSettings.Visible == true) {
 				m_menuSettings.Close(ToolStripDropDownCloseReason.CloseCalled);
@@ -244,6 +248,8 @@ namespace DHInfoDesk {
 			m_menuSettings.Show(this, new Point(Width, 0));
 		}
 
+		// Starts outside-click detection when the settings popup opens.
+		// 설정 팝업이 열리면 외부 클릭 감지를 시작한다.
 		private void m_menuSettings_Opened(object sender, EventArgs e) {
 			if (m_bMessageFilterRegistered == false) {
 				Application.AddMessageFilter(this);
@@ -255,6 +261,8 @@ namespace DHInfoDesk {
 			DoInstallMouseHook();
 		}
 
+		// Stops outside-click detection when the settings popup closes.
+		// 설정 팝업이 닫히면 외부 클릭 감지를 중지한다.
 		private void m_menuSettings_Closed(object sender, ToolStripDropDownClosedEventArgs e) {
 			m_tmPopupClose.Stop();
 			m_bMouseButtonDown = false;
@@ -263,6 +271,8 @@ namespace DHInfoDesk {
 			DoRemoveMessageFilter();
 		}
 
+		// Installs the low-level mouse hook used for outside-click detection.
+		// 외부 클릭 감지에 사용하는 저수준 마우스 훅을 설치한다.
 		private void DoInstallMouseHook() {
 			if (m_hMouseHook != IntPtr.Zero) {
 				return;
@@ -273,6 +283,8 @@ namespace DHInfoDesk {
 				m_mouseHookProc, IntPtr.Zero, 0);
 		}
 
+		// Removes the low-level mouse hook.
+		// 저수준 마우스 훅을 제거한다.
 		private void DoRemoveMouseHook() {
 			if (m_hMouseHook != IntPtr.Zero) {
 				User32.UnhookWindowsHookEx(m_hMouseHook);
@@ -282,6 +294,8 @@ namespace DHInfoDesk {
 			m_mouseHookProc = null;
 		}
 
+		// Handles global mouse events and schedules popup closing.
+		// 전역 마우스 이벤트를 처리하고 팝업 닫기를 예약한다.
 		private IntPtr MouseHookCallback(int ncode, IntPtr wparam, IntPtr lparam) {
 			if (ncode >= 0 && m_menuSettings.Visible == true &&
 				IsMouseDownMessage(wparam.ToInt32()) == true) {
@@ -297,6 +311,8 @@ namespace DHInfoDesk {
 			return User32.CallNextHookEx(m_hMouseHook, ncode, wparam, lparam);
 		}
 
+		// Closes the settings popup after an outside click.
+		// 외부 클릭 후 설정 팝업을 닫는다.
 		private void DoClosePopup() {
 			if (m_menuSettings.Visible == true) {
 				m_menuSettings.Close(ToolStripDropDownCloseReason.AppClicked);
@@ -305,6 +321,8 @@ namespace DHInfoDesk {
 			m_bPopupClosePending = false;
 		}
 
+		// Polls mouse button transitions as a popup-closing fallback.
+		// 팝업 닫기 보조 수단으로 마우스 버튼 전환을 확인한다.
 		private void m_tmPopupClose_Tick(object sender, EventArgs e) {
 			bool bdown = IsMouseButtonDown();
 			if (bdown == false) {
@@ -323,12 +341,16 @@ namespace DHInfoDesk {
 			}
 		}
 
+		// Checks whether any primary mouse button is currently pressed.
+		// 주요 마우스 버튼 중 하나가 현재 눌렸는지 확인한다.
 		private bool IsMouseButtonDown() {
 			return (User32.GetAsyncKeyState(User32.VK_LBUTTON) & 0x8000) != 0 ||
 				(User32.GetAsyncKeyState(User32.VK_RBUTTON) & 0x8000) != 0 ||
 				(User32.GetAsyncKeyState(User32.VK_MBUTTON) & 0x8000) != 0;
 		}
 
+		// Filters application messages to close the popup on outside clicks.
+		// 외부 클릭 시 팝업을 닫도록 애플리케이션 메시지를 필터링한다.
 		public bool PreFilterMessage(ref Message m) {
 			if (m_menuSettings.Visible == false || IsMouseDownMessage(m.Msg) == false) {
 				return false;
@@ -344,12 +366,16 @@ namespace DHInfoDesk {
 			return false;
 		}
 
+		// Determines whether a window message represents a mouse button press.
+		// 윈도우 메시지가 마우스 버튼 누름인지 확인한다.
 		private bool IsMouseDownMessage(int nmessage) {
 			return nmessage == WM_LBUTTONDOWN || nmessage == WM_RBUTTONDOWN ||
 				nmessage == WM_MBUTTONDOWN || nmessage == WM_NCLBUTTONDOWN ||
 				nmessage == WM_NCRBUTTONDOWN || nmessage == WM_NCMBUTTONDOWN;
 		}
 
+		// Checks whether a screen point is inside a popup or nested submenu.
+		// 화면 좌표가 팝업 또는 하위 메뉴 내부인지 확인한다.
 		private bool IsPointInDropDown(ToolStripDropDown dropdown, Point point) {
 			if (dropdown.Visible == true && dropdown.Bounds.Contains(point) == true) {
 				return true;
@@ -367,6 +393,8 @@ namespace DHInfoDesk {
 			return false;
 		}
 
+		// Removes the application message filter when registered.
+		// 등록된 애플리케이션 메시지 필터를 제거한다.
 		private void DoRemoveMessageFilter() {
 			if (m_bMessageFilterRegistered == true) {
 				Application.RemoveMessageFilter(this);
@@ -374,6 +402,8 @@ namespace DHInfoDesk {
 			}
 		}
 
+		// Applies changes to the enabled information sections.
+		// 활성화된 정보 항목 변경을 적용한다.
 		private void m_menuShowItem_CheckedChanged(object sender, EventArgs e) {
 			if (m_bUpdatingMenu == true) {
 				return;
@@ -387,6 +417,8 @@ namespace DHInfoDesk {
 			DoRaiseSettingsChanged();
 		}
 
+		// Applies the selected panel alignment.
+		// 선택한 패널 정렬 방식을 적용한다.
 		private void m_menuPosition_Click(object sender, EventArgs e) {
 			if (sender == m_menuTopLeft) {
 				m_settings.Alignment = E_InfoDeskAlignment.TopLeft;
@@ -405,6 +437,8 @@ namespace DHInfoDesk {
 			DoRaiseSettingsChanged();
 		}
 
+		// Applies the selected monitor display mode.
+		// 선택한 모니터 표시 모드를 적용한다.
 		private void m_menuMonitorMode_Click(object sender, EventArgs e) {
 			if (sender == m_menuAllMonitors) {
 				m_settings.MonitorMode = E_InfoDeskMonitorMode.All;
@@ -423,6 +457,8 @@ namespace DHInfoDesk {
 			DoRaiseSettingsChanged();
 		}
 
+		// Enables or disables privacy mode.
+		// 개인정보 보호 모드를 활성화하거나 비활성화한다.
 		private void m_menuPrivacyMode_CheckedChanged(object sender, EventArgs e) {
 			if (m_bUpdatingMenu == true) {
 				return;
@@ -433,6 +469,8 @@ namespace DHInfoDesk {
 			DoRaiseSettingsChanged();
 		}
 
+		// Applies changes to visible privacy-sensitive items.
+		// 표시할 개인정보 항목 변경을 적용한다.
 		private void m_menuPrivacyItem_CheckedChanged(object sender, EventArgs e) {
 			if (m_bUpdatingMenu == true) {
 				return;
@@ -445,6 +483,8 @@ namespace DHInfoDesk {
 			DoRaiseSettingsChanged();
 		}
 
+		// Applies the selected UI size.
+		// 선택한 UI 크기를 적용한다.
 		private void m_menuUiSize_Click(object sender, EventArgs e) {
 			if (sender == m_menuSizeCompact) {
 				m_settings.UiScale = E_InfoDeskUiScale.Compact;
@@ -460,6 +500,8 @@ namespace DHInfoDesk {
 			DoRaiseSettingsChanged();
 		}
 
+		// Applies the selected accent color.
+		// 선택한 강조 색상을 적용한다.
 		private void m_menuAccent_Click(object sender, EventArgs e) {
 			if (sender == m_menuAccentBlue) {
 				m_settings.AccentColor = E_InfoDeskAccentColor.Blue;
@@ -478,6 +520,8 @@ namespace DHInfoDesk {
 			DoRaiseSettingsChanged();
 		}
 
+		// Applies the selected text color.
+		// 선택한 글자 색상을 적용한다.
 		private void m_menuTextColor_Click(object sender, EventArgs e) {
 			if (sender == m_menuTextWhite) {
 				m_settings.TextColor = E_InfoDeskTextColor.White;
@@ -496,6 +540,8 @@ namespace DHInfoDesk {
 			DoRaiseSettingsChanged();
 		}
 
+		// Applies the selected system information refresh interval.
+		// 선택한 시스템 정보 새로 고침 간격을 적용한다.
 		private void m_menuRefreshInterval_Click(object sender, EventArgs e) {
 			if (sender == m_menuRefresh1Second) {
 				m_settings.RefreshIntervalSeconds = 1;
@@ -514,6 +560,8 @@ namespace DHInfoDesk {
 			DoRaiseSettingsChanged();
 		}
 
+		// Confirms and resets display settings to their defaults.
+		// 확인 후 표시 설정을 기본값으로 재설정한다.
 		private void m_menuResetSettings_Click(object sender, EventArgs e) {
 			DialogResult result = MessageBox.Show(this,
 				"Reset all display settings to their default values?\r\n\r\n" +
@@ -531,24 +579,32 @@ namespace DHInfoDesk {
 			DoRaiseSettingsChanged();
 		}
 
+		// Raises the auto-run setting change event.
+		// 자동 실행 설정 변경 이벤트를 발생시킨다.
 		private void m_menuAutoRun_CheckedChanged(object sender, EventArgs e) {
 			if (OnAutoRunChanged != null) {
 				OnAutoRunChanged(this, m_menuAutoRun.Checked);
 			}
 		}
 
+		// Raises the application exit event.
+		// 애플리케이션 종료 이벤트를 발생시킨다.
 		private void m_menuExit_Click(object sender, EventArgs e) {
 			if (OnExit != null) {
 				OnExit(this, EventArgs.Empty);
 			}
 		}
 
+		// Updates the auto-run menu state without raising a change event.
+		// 변경 이벤트 없이 자동 실행 메뉴 상태를 갱신한다.
 		public void SetAutoRun(bool bautorun) {
 			m_menuAutoRun.CheckedChanged -= m_menuAutoRun_CheckedChanged;
 			m_menuAutoRun.Checked = bautorun;
 			m_menuAutoRun.CheckedChanged += m_menuAutoRun_CheckedChanged;
 		}
 
+		// Applies settings to the menu, button size, and position.
+		// 설정을 메뉴, 버튼 크기, 위치에 적용한다.
 		public void SetSettings(DHInfoDeskSettings settings) {
 			if (settings == null) {
 				return;
@@ -560,6 +616,8 @@ namespace DHInfoDesk {
 			DoUpdateLocation();
 		}
 
+		// Keeps the settings button at the bottom while the popup is closed.
+		// 팝업이 닫힌 동안 설정 버튼을 최하단에 유지한다.
 		public void DoKeepBottomMost() {
 			if (IsHandleCreated == true && m_menuSettings.Visible == false) {
 				User32.SetWindowPos(Handle, User32.HWND_BOTTOM, 0, 0, 0, 0,
@@ -567,12 +625,16 @@ namespace DHInfoDesk {
 			}
 		}
 
+		// Initializes a checkable menu item and its click handler.
+		// 선택 가능한 메뉴 항목과 클릭 처리기를 초기화한다.
 		private void InitCheckMenu(ToolStripMenuItem menu, string strtext, EventHandler handler) {
 			menu.Text = strtext;
 			menu.CheckOnClick = true;
 			menu.Click += handler;
 		}
 
+		// Synchronizes all settings menu states with the current settings.
+		// 모든 설정 메뉴 상태를 현재 설정과 동기화한다.
 		private void DoUpdateSettingsMenu() {
 			m_bUpdatingMenu = true;
 			try {
@@ -635,12 +697,16 @@ namespace DHInfoDesk {
 			}
 		}
 
+		// Raises the display settings change event.
+		// 표시 설정 변경 이벤트를 발생시킨다.
 		private void DoRaiseSettingsChanged() {
 			if (OnSettingsChanged != null) {
 				OnSettingsChanged(this, m_settings);
 			}
 		}
 
+		// Positions the settings button inside the information panel.
+		// 설정 버튼을 정보 패널 내부에 배치한다.
 		private void DoUpdateLocation() {
 			int panelmargin = Scale(48);
 			int npanelwidth = Math.Min(Scale(382),
@@ -668,6 +734,8 @@ namespace DHInfoDesk {
 			Location = new Point(nx, ny);
 		}
 
+		// Calculates the information panel height from enabled sections.
+		// 활성화된 정보 항목을 기준으로 정보 패널 높이를 계산한다.
 		private int GetPanelHeight() {
 			int nheight = 104;
 
@@ -704,6 +772,8 @@ namespace DHInfoDesk {
 			return Scale(nheight);
 		}
 
+		// Resizes the settings button for the selected UI scale.
+		// 선택한 UI 배율에 맞게 설정 버튼 크기를 조정한다.
 		private void DoUpdateButtonScale() {
 			ClientSize = new Size(Scale(24), Scale(24));
 			Font oldfont = m_btnSettings.Font;
@@ -714,6 +784,8 @@ namespace DHInfoDesk {
 			}
 		}
 
+		// Returns the scale factor for the selected UI size.
+		// 선택한 UI 크기의 배율을 반환한다.
 		private float GetUiScale() {
 			if (m_settings.UiScale == E_InfoDeskUiScale.Compact) {
 				return 0.86f;
@@ -725,10 +797,14 @@ namespace DHInfoDesk {
 			return 1.0f;
 		}
 
+		// Scales a logical pixel value for the selected UI size.
+		// 논리 픽셀 값을 선택한 UI 크기에 맞게 조정한다.
 		private int Scale(int nvalue) {
 			return Math.Max(1, (int)Math.Round(nvalue * GetUiScale()));
 		}
 
+		// Releases timers, hooks, and message filters.
+		// 타이머, 훅, 메시지 필터를 해제한다.
 		protected override void Dispose(bool disposing) {
 			if (disposing == true) {
 				m_tmPopupClose.Stop();

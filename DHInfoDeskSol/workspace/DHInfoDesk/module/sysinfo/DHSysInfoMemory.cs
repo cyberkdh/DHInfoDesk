@@ -11,6 +11,8 @@ using DHInfoDesk.module.win32;
 namespace DHInfoDesk.module.sysinfo {
 	internal sealed class DHSysInfoMemory {
 
+		// Collects current physical memory capacity and usage.
+		// 현재 물리 메모리 용량과 사용률을 수집한다.
 		public DHSysInfoMemoryData Collect() {
 			DHSysInfoMemoryData data = new DHSysInfoMemoryData();
 

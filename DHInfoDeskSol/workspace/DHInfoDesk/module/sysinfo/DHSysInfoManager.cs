@@ -24,12 +24,16 @@ namespace DHInfoDesk.module.sysinfo {
 			get { return m_snapshot; }
 		}
 
+		// Collects both static and dynamic system information.
+		// 정적 및 동적 시스템 정보를 모두 수집한다.
 		public DHSysInfoSnapshot CollectAll() {
 			CollectStatic();
 			CollectDynamic();
 			return m_snapshot;
 		}
 
+		// Collects system properties that change infrequently.
+		// 자주 변경되지 않는 시스템 속성을 수집한다.
 		public DHSysInfoSnapshot CollectStatic() {
 			ThrowIfDisposed();
 
@@ -108,6 +112,8 @@ namespace DHInfoDesk.module.sysinfo {
 			return m_snapshot;
 		}
 
+		// Collects system values that change during execution.
+		// 실행 중 변경되는 시스템 값을 수집한다.
 		public DHSysInfoSnapshot CollectDynamic() {
 			ThrowIfDisposed();
 
@@ -186,12 +192,16 @@ namespace DHInfoDesk.module.sysinfo {
 			return m_snapshot;
 		}
 
+		// Throws when the manager has already been disposed.
+		// 관리자가 이미 해제된 경우 예외를 발생시킨다.
 		private void ThrowIfDisposed() {
 			if (m_bDisposed == true) {
 				throw new ObjectDisposedException(GetType().FullName);
 			}
 		}
 
+		// Releases resources owned by system information collectors.
+		// 시스템 정보 수집기가 소유한 리소스를 해제한다.
 		public void Dispose() {
 			if (m_bDisposed == true) {
 				return;

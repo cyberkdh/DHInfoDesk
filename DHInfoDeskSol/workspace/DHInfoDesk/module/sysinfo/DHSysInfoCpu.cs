@@ -21,6 +21,8 @@ namespace DHInfoDesk.module.sysinfo {
 
 		private PerformanceCounter m_counterUsage = null;
 
+		// Initializes the total processor usage counter.
+		// 전체 프로세서 사용률 카운터를 초기화한다.
 		public DHSysInfoCpu() {
 			try {
 				m_counterUsage = new PerformanceCounter("Processor", "% Processor Time", "_Total", true);
@@ -31,6 +33,8 @@ namespace DHInfoDesk.module.sysinfo {
 			}
 		}
 
+		// Collects static processor properties and initial usage.
+		// 정적 프로세서 속성과 초기 사용률을 수집한다.
 		public DHSysInfoCpuData CollectStatic() {
 			DHSysInfoCpuData data = new DHSysInfoCpuData();
 			data.LogicalProcessorCount = Environment.ProcessorCount;
@@ -69,6 +73,8 @@ namespace DHInfoDesk.module.sysinfo {
 			return data;
 		}
 
+		// Updates the current total processor usage.
+		// 현재 전체 프로세서 사용률을 갱신한다.
 		public void UpdateDynamic(DHSysInfoCpuData data) {
 			if (data == null || m_counterUsage == null) {
 				return;
@@ -82,6 +88,8 @@ namespace DHInfoDesk.module.sysinfo {
 			}
 		}
 
+		// Counts physical processor cores through the Windows API.
+		// Windows API를 통해 물리 프로세서 코어 수를 계산한다.
 		private int GetPhysicalCoreCount() {
 			uint nlength = 0;
 			Kernel32.GetLogicalProcessorInformationEx(DEF_RELATION_PROCESSOR_CORE, IntPtr.Zero, ref nlength);
@@ -122,6 +130,8 @@ namespace DHInfoDesk.module.sysinfo {
 			}
 		}
 
+		// Collects processor details from the registry as a fallback.
+		// 대체 경로로 레지스트리에서 프로세서 정보를 수집한다.
 		private void CollectRegistryFallback(DHSysInfoCpuData data) {
 			try {
 				using (RegistryKey key = Registry.LocalMachine.OpenSubKey(DEF_REGISTRY_CPU_PATH, false)) {
@@ -138,6 +148,8 @@ namespace DHInfoDesk.module.sysinfo {
 			}
 		}
 
+		// Converts a nullable value to a signed integer.
+		// null 가능 값을 부호 있는 정수로 변환한다.
 		private int ToInt32(object value) {
 			if (value == null) {
 				return 0;
@@ -146,6 +158,8 @@ namespace DHInfoDesk.module.sysinfo {
 			return Convert.ToInt32(value);
 		}
 
+		// Converts a nullable value to an unsigned integer.
+		// null 가능 값을 부호 없는 정수로 변환한다.
 		private uint ToUInt32(object value) {
 			if (value == null) {
 				return 0;
@@ -154,6 +168,8 @@ namespace DHInfoDesk.module.sysinfo {
 			return Convert.ToUInt32(value);
 		}
 
+		// Releases the processor usage counter.
+		// 프로세서 사용률 카운터를 해제한다.
 		public void Dispose() {
 			if (m_counterUsage != null) {
 				m_counterUsage.Dispose();

@@ -20,6 +20,8 @@ namespace DHInfoDesk.module.sysinfo {
 		public IList<DHSysInfoNetworkData> Network { get; internal set; }
 		public IList<DHSysInfoDisplayData> Display { get; internal set; }
 
+		// Initializes an empty system information snapshot.
+		// 빈 시스템 정보 스냅샷을 초기화한다.
 		public DHSysInfoSnapshot() {
 			CollectedAt = DateTime.MinValue;
 			Status = new DHSysInfoCollectionStatusSet();
@@ -40,6 +42,8 @@ namespace DHInfoDesk.module.sysinfo {
 		public DHSysInfoCollectionStatus Network { get; private set; }
 		public DHSysInfoCollectionStatus Display { get; private set; }
 
+		// Initializes collection status objects for every category.
+		// 모든 카테고리의 수집 상태 객체를 초기화한다.
 		public DHSysInfoCollectionStatusSet() {
 			System = new DHSysInfoCollectionStatus();
 			Cpu = new DHSysInfoCollectionStatus();
@@ -57,6 +61,8 @@ namespace DHInfoDesk.module.sysinfo {
 		public DateTime LastAttemptAt { get; internal set; }
 		public DateTime LastSuccessAt { get; internal set; }
 
+		// Initializes an empty collection status.
+		// 빈 수집 상태를 초기화한다.
 		public DHSysInfoCollectionStatus() {
 			IsSuccess = false;
 			IsPartial = false;
@@ -65,6 +71,8 @@ namespace DHInfoDesk.module.sysinfo {
 			LastSuccessAt = DateTime.MinValue;
 		}
 
+		// Marks a collection attempt as successful.
+		// 수집 시도를 성공 상태로 표시한다.
 		internal void SetSuccess(DateTime collectedAt) {
 			IsSuccess = true;
 			IsPartial = false;
@@ -73,6 +81,8 @@ namespace DHInfoDesk.module.sysinfo {
 			LastSuccessAt = collectedAt;
 		}
 
+		// Marks a collection attempt as failed.
+		// 수집 시도를 실패 상태로 표시한다.
 		internal void SetFailure(DateTime collectedAt, Exception ex) {
 			IsSuccess = false;
 			IsPartial = false;
@@ -80,6 +90,8 @@ namespace DHInfoDesk.module.sysinfo {
 			LastAttemptAt = collectedAt;
 		}
 
+		// Marks a collection attempt as partially successful.
+		// 수집 시도를 부분 성공 상태로 표시한다.
 		internal void SetPartial(DateTime collectedAt, string strmessage) {
 			IsSuccess = false;
 			IsPartial = true;
@@ -99,6 +111,8 @@ namespace DHInfoDesk.module.sysinfo {
 		public TimeSpan Uptime { get; internal set; }
 		public DateTime LastBootTime { get; internal set; }
 
+		// Initializes empty operating system information.
+		// 빈 운영체제 정보를 초기화한다.
 		public DHSysInfoSystemData() {
 			ComputerName = "";
 			UserName = "";
@@ -120,6 +134,8 @@ namespace DHInfoDesk.module.sysinfo {
 		public uint MaxClockMHz { get; internal set; }
 		public float UsagePercent { get; internal set; }
 
+		// Initializes empty processor information.
+		// 빈 프로세서 정보를 초기화한다.
 		public DHSysInfoCpuData() {
 			Name = "";
 			Manufacturer = "";
@@ -143,6 +159,8 @@ namespace DHInfoDesk.module.sysinfo {
 		public long UsedBytes { get; internal set; }
 		public double UsagePercent { get; internal set; }
 
+		// Initializes empty storage information.
+		// 빈 저장 장치 정보를 초기화한다.
 		public DHSysInfoStorageData() {
 			Name = "";
 			VolumeLabel = "";
@@ -164,6 +182,8 @@ namespace DHInfoDesk.module.sysinfo {
 		public long ReceiveBytesPerSecond { get; internal set; }
 		public long SendBytesPerSecond { get; internal set; }
 
+		// Initializes empty network adapter information.
+		// 빈 네트워크 어댑터 정보를 초기화한다.
 		public DHSysInfoNetworkData() {
 			Id = "";
 			Name = "";
@@ -186,6 +206,8 @@ namespace DHInfoDesk.module.sysinfo {
 		public float DpiX { get; internal set; }
 		public float DpiY { get; internal set; }
 
+		// Initializes empty display information.
+		// 빈 디스플레이 정보를 초기화한다.
 		public DHSysInfoDisplayData() {
 			DeviceName = "";
 		}

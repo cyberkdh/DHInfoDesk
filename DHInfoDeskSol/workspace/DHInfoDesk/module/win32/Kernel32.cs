@@ -22,6 +22,8 @@ namespace DHInfoDesk.module.win32 {
 			public ulong ullAvailVirtual;
 			public ulong ullAvailExtendedVirtual;
 
+			// Initializes the native structure size required by Windows.
+			// Windows에서 요구하는 네이티브 구조체 크기를 초기화한다.
 			public MEMORYSTATUSEX() {
 				dwLength = (uint)Marshal.SizeOf(typeof(MEMORYSTATUSEX));
 			}

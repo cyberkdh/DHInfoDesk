@@ -15,6 +15,8 @@ using System.Windows.Forms;
 namespace DHInfoDesk.module.sysinfo {
 	internal sealed class DHSysInfoDisplay {
 
+		// Collects geometry and DPI information for all displays.
+		// 모든 디스플레이의 영역과 DPI 정보를 수집한다.
 		public IList<DHSysInfoDisplayData> Collect() {
 			List<DHSysInfoDisplayData> result = new List<DHSysInfoDisplayData>();
 			Screen[] screens = Screen.AllScreens;
@@ -43,6 +45,8 @@ namespace DHInfoDesk.module.sysinfo {
 			return result;
 		}
 
+		// Retrieves monitor DPI with a graphics-based fallback.
+		// 그래픽 기반 대체 경로를 포함해 모니터 DPI를 조회한다.
 		private void GetMonitorDpi(Screen screen, out float dpiX, out float dpiY) {
 			dpiX = 96.0f;
 			dpiY = 96.0f;

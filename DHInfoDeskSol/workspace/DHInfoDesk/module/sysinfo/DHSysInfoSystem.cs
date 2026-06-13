@@ -14,6 +14,8 @@ namespace DHInfoDesk.module.sysinfo {
 	internal sealed class DHSysInfoSystem {
 		private const string DEF_REGISTRY_WINDOWS_PATH = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion";
 
+		// Collects static operating system and identity information.
+		// 정적 운영체제 및 식별 정보를 수집한다.
 		public DHSysInfoSystemData CollectStatic() {
 			DHSysInfoSystemData data = new DHSysInfoSystemData();
 
@@ -46,6 +48,8 @@ namespace DHInfoDesk.module.sysinfo {
 			return data;
 		}
 
+		// Updates uptime and the estimated last boot time.
+		// 가동 시간과 추정 마지막 부팅 시간을 갱신한다.
 		public void UpdateDynamic(DHSysInfoSystemData data) {
 			if (data == null) {
 				return;

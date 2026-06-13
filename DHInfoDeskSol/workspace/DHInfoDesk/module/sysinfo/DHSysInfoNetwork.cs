@@ -22,14 +22,20 @@ namespace DHInfoDesk.module.sysinfo {
 		private readonly Dictionary<string, NetworkSample> m_mapSample =
 			new Dictionary<string, NetworkSample>(StringComparer.OrdinalIgnoreCase);
 
+		// Collects network adapter properties without transfer rates.
+		// 전송 속도를 제외한 네트워크 어댑터 속성을 수집한다.
 		public IList<DHSysInfoNetworkData> CollectStatic() {
 			return Collect(false);
 		}
 
+		// Collects network adapter properties and transfer rates.
+		// 네트워크 어댑터 속성과 전송 속도를 수집한다.
 		public IList<DHSysInfoNetworkData> CollectDynamic() {
 			return Collect(true);
 		}
 
+		// Collects network adapter data with optional rate calculation.
+		// 선택적으로 속도를 계산하며 네트워크 어댑터 데이터를 수집한다.
 		private IList<DHSysInfoNetworkData> Collect(bool bcomputerate) {
 			List<DHSysInfoNetworkData> result = new List<DHSysInfoNetworkData>();
 			NetworkInterface[] adapters;
@@ -82,6 +88,8 @@ namespace DHInfoDesk.module.sysinfo {
 			return result;
 		}
 
+		// Calculates transfer rates from the previous adapter sample.
+		// 이전 어댑터 샘플을 기준으로 전송 속도를 계산한다.
 		private void UpdateRate(DHSysInfoNetworkData data, DateTime now, bool bcomputerate) {
 			NetworkSample previous;
 			if (bcomputerate == true && m_mapSample.TryGetValue(data.Id, out previous) == true) {
@@ -101,6 +109,8 @@ namespace DHInfoDesk.module.sysinfo {
 			};
 		}
 
+		// Removes cached samples for adapters that no longer exist.
+		// 더 이상 존재하지 않는 어댑터의 캐시 샘플을 제거한다.
 		private void RemoveMissingSamples(IList<DHSysInfoNetworkData> result) {
 			HashSet<string> active = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 			int i;
@@ -120,6 +130,8 @@ namespace DHInfoDesk.module.sysinfo {
 			}
 		}
 
+		// Formats a physical address using hexadecimal byte pairs.
+		// 물리 주소를 16진수 바이트 쌍으로 변환한다.
 		private string FormatMacAddress(PhysicalAddress address) {
 			if (address == null) {
 				return "";

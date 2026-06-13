@@ -12,6 +12,8 @@ using System.IO;
 
 namespace DHInfoDesk.module.sysinfo {
 	internal sealed class DHSysInfoStorage {
+		// Collects capacity and usage information for all logical drives.
+		// 모든 논리 드라이브의 용량과 사용률 정보를 수집한다.
 		public IList<DHSysInfoStorageData> Collect() {
 			List<DHSysInfoStorageData> result = new List<DHSysInfoStorageData>();
 
