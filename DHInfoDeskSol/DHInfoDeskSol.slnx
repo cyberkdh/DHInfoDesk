@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/workspace/">
+    <Project Path="workspace/DHInfoDesk.SmokeTest/DHInfoDesk.SmokeTest.csproj" Id="c1e68e85-5e01-4c05-b980-92c8f5c6817e" />
+    <Project Path="workspace/DHInfoDesk/DHInfoDesk.csproj" Id="96ab7622-e25b-4a04-9715-ea175803a543" />
+  </Folder>
+</Solution>
