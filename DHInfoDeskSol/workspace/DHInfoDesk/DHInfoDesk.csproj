@@ -8,6 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>DHInfoDesk</RootNamespace>
     <AssemblyName>DHInfoDesk</AssemblyName>
+    <ApplicationIcon>resources\DHInfoDesk.ico</ApplicationIcon>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -89,6 +90,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="resources\DHInfoDesk.ico" />
+    <None Include="resources\DHInfoDesk_256.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
